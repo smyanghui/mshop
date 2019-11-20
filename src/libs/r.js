@@ -4,11 +4,18 @@ import axios from 'axios';
 // axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
 // export default axios;
 
+const apiDomain = {
+    dev: '//testapi.handeson.com',
+    prd: '//prdapi.handeson.com'
+};
+const env = process.env.VUE_APP_CURENV || 'prd';
+const baseURL = apiDomain[env];
+
 export default {
     ajax (url, data, method = 'post') {
         return new Promise((resolve, reject) => {
             axios({
-                baseURL: '//testapi.handeson.com',
+                baseURL,
                 url,
                 data,
                 method,
