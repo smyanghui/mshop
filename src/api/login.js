@@ -1,20 +1,16 @@
-import ajax from '@/libs/ajax';
+import R from '@/libs/r';
 
 export default {
     getMsgCode (param = {}) {
-        return ajax.post('/v1_sms_index/getSmsCode', param);
+        return R.ajax('/v1_sms_index/getSmsCode', param);
     },
 
     smsLogin (param = {}) {
-        return ajax.post('/v1_user_login/loginBySms', param, {
-            headers: {
-                'app-platform': 'mp'
-            }
-        });
+        return R.ajax('/v1_user_login/loginBySms', param);
     },
 
     selectUserIDLogin (param = {}) {
-        return ajax.post('/v1_user_login/selectUserIDLogin', param);
+        return R.ajax('/v1_user_login/selectUserIDLogin', param);
     }
 
 };

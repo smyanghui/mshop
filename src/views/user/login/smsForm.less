@@ -1,0 +1,73 @@
+
+.sms_box {
+    padding: 30px;
+
+    .input_line {
+        display: flex;
+        align-items: center;
+        border-bottom: 1px solid #eee;
+        margin-bottom: 20px;
+
+        .i_icon {
+            width: 50px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .input_box {
+            flex: 1;
+            position: relative;
+
+            input {
+                width: 100%;
+                font-size: 12px;
+                height: 40px;
+                // margin: 0 20px;
+                border: 0;
+                outline: 0;
+            }
+
+            .clear_icon {
+                position: absolute;
+                right: 10px;
+                top: 12px;
+                z-index: 2;
+            }
+        }
+    }
+
+    .dectext {
+        text-align: center;
+        color: #999;
+        margin-top: 10px;
+    }
+
+    .agree {
+        color: #999;
+        font-size: 12px;
+        line-height: 32px;
+        display: flex;
+        padding-top: 20px;
+
+        .a_icon {
+            width: 40px;
+            font-size: 14px;
+
+            .yes {
+                color: #B80A1C;
+            }
+            .no {
+                color: #ccc;
+            }
+        }
+
+        .a_text {
+            flex: 1;
+        }
+    }
+
+
+    .list_item {
+        width: 50%;
+    }
+}

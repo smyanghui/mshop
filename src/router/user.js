@@ -5,7 +5,7 @@ const routes = [
         meta: {
             title: '用户登录'
         },
-        component: resolve => require(['@/views/user/aa'], resolve)
+        component: resolve => require(['@/views/user/login'], resolve)
     },
     {
         path: '/address',
