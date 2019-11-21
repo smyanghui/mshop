@@ -12,9 +12,9 @@
     "build:prd": "vue-cli-service build --mode production"
   },
   "dependencies": {
+    "ant-design-vue": "^1.4.6",
     "axios": "^0.19.0",
     "core-js": "^3.3.2",
-    "mint-ui": "^2.2.13",
     "moment": "^2.24.0",
     "vue": "^2.6.10",
     "vue-cookies": "^1.5.13",
