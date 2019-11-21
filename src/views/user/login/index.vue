@@ -1,5 +1,13 @@
 <template>
     <div class="out_box">
+        <!-- <mt-field
+            label="手机号"
+            placeholder="请输入手机号"
+            type="tel"
+            v-model="phone"
+        >
+            <mt-button type="primary">primary</mt-button>
+        </mt-field> -->
 
         <div class="login_box">
             <SmsForm
@@ -23,6 +31,7 @@ import './index.less';
 export default {
     data () {
         return {
+            // phone: '',
             td: {},
             pType: 1,
             userInfo: {}
