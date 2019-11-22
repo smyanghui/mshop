@@ -1,24 +1,23 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import Home from '../views/Home.vue';
+import util from './util';
+
+// 路由模块
+import mall from './mall';
+import active from './active';
+import user from './user';
 
 Vue.use(VueRouter);
 
-const routes = [
-    {
-        path: '/',
-        name: 'home',
-        component: Home
-    },
-    {
-        path: '/about',
-        name: 'about',
-        // route level code-splitting
-        // this generates a separate chunk (about.[hash].js) for this route
-        // which is lazy-loaded when the route is visited.
-        component: () => import(/* webpackChunkName: "about" */ '../views/About.vue')
-    }
-];
+const allRoutes = {
+    mall,
+    active,
+    user
+};
+
+const routes = util.mergeRoutes(allRoutes);
+
+console.log('全部路由', routes);
 
 const router = new VueRouter({
     routes

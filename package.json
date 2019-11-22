@@ -17,6 +17,7 @@
     "core-js": "^3.3.2",
     "moment": "^2.24.0",
     "vue": "^2.6.10",
+    "vue-canvas-nest": "^2.0.0",
     "vue-cookies": "^1.5.13",
     "vue-router": "^3.1.3"
   },
