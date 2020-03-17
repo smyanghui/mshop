@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { apiDomain } from '@/api/domain';
+// import { apiDomain } from '@/api/domain';
 
 export default {
     raxios (param) {
@@ -12,15 +12,15 @@ export default {
         });
     },
     ajax (ourl, data, method = 'post') {
-        const curApiDomain = apiDomain.main; // 默认
-        const url = /^https?:\/\//i.test(ourl) ? ourl : (curApiDomain + ourl);
+        // const curApiDomain = apiDomain.main; // 默认
+        const url = ourl; // /^https?:\/\//i.test(ourl) ? ourl : (curApiDomain + ourl);
         const param = {
             url,
             data,
             method,
             headers: {
-                'app-platform': 'mp',
-                'app-v': '2.0.0'
+                // 'app-platform': 'mp',
+                // 'app-v': '2.0.0'
             }
         };
 

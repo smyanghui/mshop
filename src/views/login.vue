@@ -9,9 +9,7 @@
                     <a-popover>
                         <template slot="content">
                             请使用公司邮箱发送邮件至<br />hwopmsadmin@handeson.com申请账号,
-                            <a href="/api/manager/mail/permission/tpl"
-                                >模板下载</a
-                            >
+                            <a href="/api/manager/mail/permission/tpl">模板下载</a>
                         </template>
                         <div style="float:right">
                             <a href="javascript:;">开通账户</a>
@@ -22,7 +20,6 @@
                     <a-form-item>
                         <a-input
                             placeholder="用户名"
-                            @blur="onUserBlur"
                             v-decorator="[
                                 'username',
                                 {
@@ -43,7 +40,6 @@
                         <a-input
                             placeholder="密码"
                             type="password"
-                            @blur="onUserBlur"
                             v-decorator="[
                                 'password',
                                 {
@@ -58,35 +54,6 @@
                             ]"
                         >
                             <a-icon type="lock" slot="prefix" />
-                        </a-input>
-                    </a-form-item>
-                    <a-form-item v-if="!!checkcode">
-                        <a-input
-                            placeholder="请输入验证码"
-                            v-decorator="[
-                                'code',
-                                {
-                                    rules: [
-                                        {
-                                            required: true,
-                                            message: '请输入验证码'
-                                        }
-                                    ]
-                                }
-                            ]"
-                        >
-                            <a-icon type="code" slot="prefix" />
-                            <div
-                                class="bar-code"
-                                slot="addonAfter"
-                                @click="refreshCode"
-                            >
-                                <img
-                                    :src="checkcode.img"
-                                    width="140"
-                                    height="32"
-                                />
-                            </div>
                         </a-input>
                     </a-form-item>
                     <a-form-item>
@@ -108,9 +75,8 @@
         ></vue-canvas-nest>
     </div>
 </template>
+
 <script>
-import axios from 'axios';
-import { App } from '@/libs';
 import apiLogin from '@/api/login';
 import vueCanvasNest from 'vue-canvas-nest';
 
@@ -118,45 +84,16 @@ export default {
     data () {
         return {
             form: this.$form.createForm(this),
-            loading: false,
-            auth: [],
-            userInfo: null,
-            checkcode: null,
-            api: {
-                login: '/manager/login',
-                checkcode: '/manager/check/code',
-                getme: '/manager/me'
-            }
+            loading: false
         };
     },
     components: { vueCanvasNest },
-    mounted () {
-        App.logout(['permission', 'userInfo']);
-    },
+    mounted () {},
     methods: {
-        onUserBlur () {
-            // this.refreshCode();
-        },
-        refreshCode (params) {
-            const { username } = this.form.getFieldsValue();
-
-            if (!username) {
-                this.$message.error('请输入用户名密码');
-                return;
-            }
-            apiLogin.checkCode({ username }).then(res => {
-                if (res.data.code === 0 && res.data.data.key) {
-                    this.checkcode = res.data.data;
-                }
-            });
-        },
         handleSubmit (e) {
             e.preventDefault();
             this.form.validateFields((err, values) => {
                 if (!err) {
-                    if (values.code && this.checkcode) {
-                        values = { ...values, key: this.checkcode.key };
-                    }
                     this.login({
                         ...values
                     });
@@ -181,78 +118,25 @@ export default {
 
                     this.$cookies.set('token', token, '1m');
 
-                    this.getPermission(token)
-                        .then(data => {
-                            this.auth = data.data.data || [];
-                            this.userInfo = data.userInfo;
-
-                            this.$message.success('登录成功', 1, () => {
-                                if (
-                                    this.$route.name &&
-                                    this.$route.name.includes('404')
-                                ) {
-                                    window.location.replace('/');
-                                } else {
-                                    window.location.reload();
-                                }
-                            });
-                        })
-                        .finally(() => {
-                            this.loading = false;
-                            setTimeout(hide, 0);
-                        });
+                    this.$message.success('登录成功', 1, () => {
+                        if (
+                            this.$route.name &&
+                            this.$route.name.includes('404')
+                        ) {
+                            window.location.replace('/');
+                        } else {
+                            window.location.reload();
+                        }
+                    });
                 } else {
                     setTimeout(hide, 0);
                     this.loading = false;
                     this.$message.error(res.data.msg || '登录失败');
-                    this.refreshCode();
                 }
-            });
-        },
-        getPermission (token) {
-            const headers = {
-                Authorization: token
-            };
-
-            return new Promise((resolve, reject) => {
-                axios
-                    .get('/manager/me', { headers })
-                    .then(res => {
-                        axios
-                            .get('/manager/permissions', { headers })
-                            .then(auth => {
-                                resolve({
-                                    ...auth,
-                                    userInfo: res.data.data || {}
-                                });
-                            });
-                    })
-                    .catch(err => {
-                        reject(err);
-                    });
             });
         }
     },
-    watch: {
-        auth (v) {
-            App.storage('permission', v);
-        },
-        userInfo (v) {
-            let arr = [];
-
-            if (v.bucket) {
-                for (let key in v.bucket) {
-                    if (v.bucket[key].is_pub === 0) {
-                        arr[0] = key;
-                    }
-                    if (v.bucket[key].is_pub === 1) {
-                        arr[1] = key;
-                    }
-                }
-            }
-            App.login({ ...v, buckets: arr });
-        }
-    }
+    watch: {}
 };
 </script>
 
