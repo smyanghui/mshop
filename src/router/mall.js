@@ -5,7 +5,7 @@ const routes = [
         meta: {
             title: 'VIP特惠专区'
         },
-        component: resolve => require(['@/views/mall/aa'], resolve)
+        component: resolve => require(['@/views/active/aa'], resolve)
     },
     {
         path: '/detail',
@@ -13,7 +13,7 @@ const routes = [
         meta: {
             title: '商品详情'
         },
-        component: resolve => require(['@/views/mall/aa'], resolve)
+        component: resolve => require(['@/views/active/aa'], resolve)
     },
     {
         path: '/complete',
@@ -21,7 +21,7 @@ const routes = [
         meta: {
             title: '支付结果'
         },
-        component: resolve => require(['@/views/mall/aa'], resolve)
+        component: resolve => require(['@/views/active/aa'], resolve)
     },
     {
         path: '/confirm',
@@ -29,7 +29,7 @@ const routes = [
         meta: {
             title: '确认订单'
         },
-        component: resolve => require(['@/views/mall/aa'], resolve)
+        component: resolve => require(['@/views/active/aa'], resolve)
     }
 ];
 

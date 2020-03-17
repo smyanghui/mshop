@@ -5,7 +5,7 @@ const routes = [
         meta: {
             title: '用户登录'
         },
-        component: resolve => require(['@/views/user/login'], resolve)
+        component: resolve => require(['@/views/active/aa'], resolve)
     },
     {
         path: '/address',
@@ -13,7 +13,7 @@ const routes = [
         meta: {
             title: '地址管理'
         },
-        component: resolve => require(['@/views/user/aa'], resolve)
+        component: resolve => require(['@/views/active/aa'], resolve)
     },
     {
         path: '/address/edit',
@@ -21,7 +21,7 @@ const routes = [
         meta: {
             title: '编辑地址'
         },
-        component: resolve => require(['@/views/user/aa'], resolve)
+        component: resolve => require(['@/views/active/aa'], resolve)
     }
 ];
 

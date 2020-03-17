@@ -111,6 +111,7 @@
 <script>
 import axios from 'axios';
 import { App } from '@/libs';
+import apiLogin from '@/api/login';
 import vueCanvasNest from 'vue-canvas-nest';
 
 export default {
@@ -134,7 +135,7 @@ export default {
     },
     methods: {
         onUserBlur () {
-            this.refreshCode();
+            // this.refreshCode();
         },
         refreshCode (params) {
             const { username } = this.form.getFieldsValue();
@@ -143,7 +144,7 @@ export default {
                 this.$message.error('请输入用户名密码');
                 return;
             }
-            axios.post('/manager/check/code', { username }).then(res => {
+            apiLogin.checkCode({ username }).then(res => {
                 if (res.data.code === 0 && res.data.data.key) {
                     this.checkcode = res.data.data;
                 }
@@ -169,7 +170,7 @@ export default {
 
             // this.$cookies.set('token', token, '1m');
 
-            axios.post('/manager/login', { ...params }).then(res => {
+            apiLogin.managerLogin(params).then(res => {
                 if (res.data.code === 0) {
                     const {
                         // eslint-disable-next-line camelcase

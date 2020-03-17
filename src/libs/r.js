@@ -1,5 +1,5 @@
 import axios from 'axios';
-import domain from '@/config/domain';
+import { apiDomain } from '@/api/domain';
 
 export default {
     raxios (param) {
@@ -12,8 +12,8 @@ export default {
         });
     },
     ajax (ourl, data, method = 'post') {
-        const apiDomain = domain.mall[domain.env]; // 默认卖场
-        const url = /^https?:\/\//i.test(ourl) ? ourl : (apiDomain + ourl);
+        const curApiDomain = apiDomain.main; // 默认
+        const url = /^https?:\/\//i.test(ourl) ? ourl : (curApiDomain + ourl);
         const param = {
             url,
             data,

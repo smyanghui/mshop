@@ -1,16 +1,16 @@
 import R from '@/libs/r';
 
 export default {
-    getMsgCode (param = {}) {
-        return R.ajax('/v1_sms_index/getSmsCode', param);
+    managerLogin (param = {}) {
+        return R.ajax('/manager/login', param);
     },
 
-    smsLogin (param = {}) {
-        return R.ajax('/v1_user_login/loginBySms', param);
+    checkCode (param = {}) {
+        return R.ajax('/manager/check/code', param);
     },
 
-    selectUserIDLogin (param = {}) {
-        return R.ajax('/v1_user_login/selectUserIDLogin', param);
+    managerMe (param = {}) {
+        return R.ajax('/manager/me', param);
     }
 
 };
