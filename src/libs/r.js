@@ -1,4 +1,5 @@
 import axios from 'axios';
+import VueCookies from 'vue-cookies';
 // import { apiDomain } from '@/api/domain';
 
 export default {
@@ -11,6 +12,7 @@ export default {
             });
         });
     },
+
     ajax (ourl, data, method = 'post') {
         // const curApiDomain = apiDomain.main; // 默认
         const url = ourl; // /^https?:\/\//i.test(ourl) ? ourl : (curApiDomain + ourl);
@@ -19,6 +21,7 @@ export default {
             data,
             method,
             headers: {
+                Authorization: VueCookies.get('token') || ''
                 // 'app-platform': 'mp',
                 // 'app-v': '2.0.0'
             }
@@ -27,7 +30,3 @@ export default {
         return this.raxios(param);
     }
 };
-
-// axios.defaults.baseURL = '//testapi.handeson.com';
-// axios.defaults.headers['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8'
-// export default axios;

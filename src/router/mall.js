@@ -3,6 +3,7 @@ const routes = [
         path: '/vip',
         name: 'vip',
         meta: {
+            rules: 'task',
             title: 'VIP特惠专区'
         },
         component: resolve => require(['@/views/active/aa'], resolve)
@@ -11,23 +12,8 @@ const routes = [
         path: '/detail',
         name: 'detail',
         meta: {
+            rules: 'data_center',
             title: '商品详情'
-        },
-        component: resolve => require(['@/views/active/aa'], resolve)
-    },
-    {
-        path: '/complete',
-        name: 'complete',
-        meta: {
-            title: '支付结果'
-        },
-        component: resolve => require(['@/views/active/aa'], resolve)
-    },
-    {
-        path: '/confirm',
-        name: 'confirm',
-        meta: {
-            title: '确认订单'
         },
         component: resolve => require(['@/views/active/aa'], resolve)
     }

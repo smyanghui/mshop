@@ -78,6 +78,7 @@
 
 <script>
 import apiLogin from '@/api/login';
+import { App } from '@/libs';
 import vueCanvasNest from 'vue-canvas-nest';
 
 export default {
@@ -87,55 +88,51 @@ export default {
             loading: false
         };
     },
+
     components: { vueCanvasNest },
+
     mounted () {},
+
     methods: {
         handleSubmit (e) {
             e.preventDefault();
             this.form.validateFields((err, values) => {
                 if (!err) {
-                    this.login({
-                        ...values
-                    });
+                    this.login({ ...values });
                 }
             });
         },
+
         login (params) {
             const hide = this.$message.loading('正在登录', 0);
 
             this.loading = true;
-
-            // this.$cookies.set('token', token, '1m');
-
             apiLogin.managerLogin(params).then(res => {
-                if (res.data.code === 0) {
-                    const {
-                        // eslint-disable-next-line camelcase
-                        data: { token_type, access_token }
-                    } = res.data;
-                    // eslint-disable-next-line camelcase
-                    const token = `${token_type} ${access_token}`;
-
+                this.loading = false;
+                if (res.code === 0) {
+                    const tokenType = res.data.token_type;
+                    const accessToken = res.data.access_token;
+                    const token = tokenType + ' ' + accessToken;
                     this.$cookies.set('token', token, '1m');
-
-                    this.$message.success('登录成功', 1, () => {
-                        if (
-                            this.$route.name &&
-                            this.$route.name.includes('404')
-                        ) {
-                            window.location.replace('/');
-                        } else {
-                            window.location.reload();
-                        }
-                    });
+                    // 获取权限列表
+                    this.ajaxPermission();
                 } else {
                     setTimeout(hide, 0);
-                    this.loading = false;
                     this.$message.error(res.data.msg || '登录失败');
                 }
             });
+        },
+
+        ajaxPermission () {
+            apiLogin.permission().then(res => {
+                App.storage('permission', res.data);
+                this.$message.success('登录成功', 1, () => {
+                    window.location.reload();
+                });
+            });
         }
     },
+
     watch: {}
 };
 </script>

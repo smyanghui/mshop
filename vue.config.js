@@ -9,15 +9,9 @@ console.log('当前环境：', env, apiDomain);
 
 module.exports = {
     devServer: {
-        proxy: apiDomain
-        // proxy: {
-        //     '/manager': {
-        //         target: 'http://testmanage.handeson.com',
-        //         changeOrigin: true,
-        //         pathRewrite: {
-        //             'http://testmanage.handeson.com': ''
-        //         }
-        //     }
-        // }
+        // proxy: apiDomain
+        proxy: {
+            '/api': { target: apiDomain }
+        }
     }
 };

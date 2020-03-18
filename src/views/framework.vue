@@ -151,7 +151,7 @@
 import { routes, tile, nav, defaultKey } from '../router';
 import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN';
 import { _ } from '@/libs';
-import CommonMethod from '@/widgets/mixins/frame';
+// import CommonMethod from '@/widgets/mixins/frame';
 import TabScrool from '@/widgets/layout/tabScrool';
 // import './index.css';
 
@@ -182,7 +182,7 @@ export default {
         };
     },
     components: { TabScrool },
-    mixins: [CommonMethod],
+    // mixins: [CommonMethod],
     computed: {
         hasNavTabs () {
             return !!this.navTabs.length;
@@ -192,6 +192,9 @@ export default {
         return {
             reload: this.reload
         };
+    },
+    created () {
+        window.scrollTo(0, 0);
     },
     mounted () {
         this.$router.beforeEach((to, from, next) => {
@@ -334,9 +337,9 @@ export default {
             window.location.reload();
         },
         onClose () {
-            this.logout().then(res => {
-                this.onResetLogion();
-            });
+            // this.logout().then(res => {
+            //     this.onResetLogion();
+            // });
         },
         reload () {
             this.isRouterAlive = false;
