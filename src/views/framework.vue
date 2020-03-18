@@ -37,7 +37,7 @@
                         <a-icon type="down"
                     /></span>
                     <a-menu slot="overlay">
-                        <a-menu-item @click="onClose">退出登录</a-menu-item>
+                        <a-menu-item @click="onResetLogion">退出登录</a-menu-item>
                     </a-menu>
                 </a-dropdown>
                 <a-avatar v-else icon="user" @click="onResetLogion" />
@@ -95,12 +95,6 @@
             </a-layout-sider>
 
             <div style="flex: 1; overflow:hidden">
-                <TabScrool
-                    :list="navTabs"
-                    @update:data="v => (navTabs = v)"
-                    v-if="hasNavTabs"
-                    @del="onTabScrollDel"
-                />
                 <a-layout
                     ref="layout"
                     style="padding:16px; overflow-y: scroll;"
@@ -129,9 +123,6 @@
                             :locale="zhCN"
                             class="animated infinte fadeIn delay-0s"
                         >
-                            <!-- <keep-alive :include="needDeleteView">
-                                <router-view v-if="isRouterAlive"></router-view>
-                            </keep-alive> -->
                             <router-view v-if="isRouterAlive"></router-view>
                         </a-locale-provider>
                         <a-spin
@@ -148,17 +139,14 @@
 </template>
 
 <script>
-import { routes, tile, nav, defaultKey } from '../router';
+import { routes, tile, nav } from '../router';
 import zhCN from 'ant-design-vue/lib/locale-provider/zh_CN';
-import { _ } from '@/libs';
-// import CommonMethod from '@/widgets/mixins/frame';
-import TabScrool from '@/widgets/layout/tabScrool';
-// import './index.css';
 
 export default {
     data () {
         return {
             zhCN,
+            isError: false,
             routes,
             selectedKey: [],
             breadcrums: [],
@@ -181,75 +169,32 @@ export default {
             isRouterAlive: true
         };
     },
-    components: { TabScrool },
+    components: {},
     // mixins: [CommonMethod],
     computed: {
         hasNavTabs () {
             return !!this.navTabs.length;
         }
     },
-    provide () {
-        return {
-            reload: this.reload
-        };
-    },
-    created () {
-        window.scrollTo(0, 0);
-    },
+
+    created () {},
+
     mounted () {
         this.$router.beforeEach((to, from, next) => {
             this.isLoading = true;
-            const {
-                meta: { rules = [] }
-            } = to;
-
-            if (rules.length) {
-                this.$global.actionCookie(rules);
+            if (to.meta.title) {
+                document.title = to.meta.title;
             }
             next();
         });
 
         this.$router.afterEach((to, from) => {
-            const breadcrums = this.getMenuByRouter();
-
             this.isLoading = false;
-            if (!this.isErrorPage(to.name)) return;
-            this.breadcrums = breadcrums;
-            this.selectedKey = breadcrums.length
-                ? [this.breadcrums.filter(val => val.component)[0].name]
-                : [];
-            this.openSidebar([this.$route.name]);
-            to.meta.navTab && this.setNavTabs(to);
-            // this.setNavTabs(to);
-        });
-        if (!_.pathname(location.pathname).includes('/')) {
-            this.center = [_.pathname(location.pathname)];
-        } else {
-            this.center = [defaultKey];
-        }
-        // 设置title
-        nav.forEach(item => {
-            if (item.key === this.center) {
-                document.title = `${item.name}-${this.title}`;
-            }
-        });
-
-        this.$nextTick(() => {
-            this.$global.contentHeight = this.$refs.layout.$el.clientHeight;
+            // window.scrollTo(0, 0);
         });
     },
-    methods: {
-        onTabScrollDel (data) {
-            // @todo 预留用来设置是否清楚相应的keepalive的缓存
-            this.$nextTick(() => {
-                this.needDeleteView = data
-                    .map(item => {
-                        return item.value;
-                    })
-                    .join(',');
-            });
-        },
 
+    methods: {
         onMenuClickNav (route) {
             const { key } = route;
 
@@ -259,6 +204,7 @@ export default {
 
             o.focus();
         },
+
         onMenuClick (route) {
             const name = typeof route === 'string' ? route : route.key;
 
@@ -267,48 +213,6 @@ export default {
             }
 
             this.$router.push({ name });
-        },
-
-        setNavTabs (route) {
-            const { name, fullPath, meta } = route;
-            const itemRoute = {
-                label: meta.title,
-                value: name,
-                path: fullPath,
-                active: true,
-                meta
-            };
-
-            if (this.hasNavTabs) {
-                this.navTabs.forEach(item => {
-                    item.active = false;
-                });
-                if (!this.navTabs.map(v => v.value).includes(name)) {
-                    if (this.navTabs.length >= 10) {
-                        this.navTabs.shift();
-                    }
-                    this.navTabs.push(itemRoute);
-                } else {
-                    this.navTabs.forEach(item => {
-                        if (item.value === name) {
-                            item.active = true;
-                        }
-                    });
-                }
-            } else {
-                this.navTabs = [itemRoute];
-            }
-            this.needDeleteView = this.navTabs
-                .map(item => item.value)
-                .join(',');
-        },
-
-        bcCanClick (route) {
-            return route.component && route.children;
-        },
-
-        getMenuByRouter () {
-            return tile(this.$route.name);
         },
 
         openSidebar (names) {
@@ -325,34 +229,17 @@ export default {
                 this.openKeys = openKeys;
             }
         },
-        isErrorPage (name) {
-            if (!name) {
-                this.$router.replace('/404');
-                return false;
-            }
-            return true;
-        },
+
         onResetLogion () {
             this.$cookies.remove('token');
             window.location.reload();
-        },
-        onClose () {
-            // this.logout().then(res => {
-            //     this.onResetLogion();
-            // });
-        },
-        reload () {
-            this.isRouterAlive = false;
-            this.$nextTick(() => {
-                this.isRouterAlive = true;
-            });
         }
     }
 };
 </script>
 
 <style scoped lang="less">
-* {
+body {
     font-family: "微软雅黑";
 }
 

@@ -4,7 +4,7 @@ export default [
         name: '404',
         meta: {
             title: '404',
-            rules: ['index']
+            rules: 'index'
         },
         component: resolve => require(['@/views/components/404'], resolve)
     },
@@ -13,7 +13,7 @@ export default [
         name: 'main',
         meta: {
             title: '首页',
-            rules: ['index']
+            rules: 'index'
         },
         icon: 'home',
         component: (resolve) => {
